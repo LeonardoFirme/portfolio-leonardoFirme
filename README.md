@@ -6,6 +6,11 @@
 
 ![Demonstração do Template](./template.gif)
 
+![Live](https://img.shields.io/badge/Live-Veja_o_projeto_ao_vivo-06B6D4?style=for-the-badge)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://portfolio-leonardofirme.vercel.app/)
+
+---
+
 ### 👨‍💻 My Identity in Code
 
 ```typescript
