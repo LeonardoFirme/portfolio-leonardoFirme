@@ -1,0 +1,126 @@
+/*
+* file: src/style.css
+* description: Configuração do Tailwind CSS v4 com a paleta oficial Dracula e fontes.
+* author: Leonardo Firme
+* version: 1.1.0
+*/
+
+@import "tailwindcss";
+
+/* Força o Tailwind v4 a usar a classe .dark do HTML */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-fira: "Fira Code", monospace;
+
+  /* Cores da Paleta Oficial do Tema Dracula */
+  --color-dracula-bg: #292D3D;
+  --color-dracula-bor: #262A38;
+  --color-dracula-cur: #313649;
+  --color-dracula-fg: #f8f8f2;
+  --color-dracula-cmt: #6272a4;
+  --color-dracula-cyn: #8be9fd;
+  --color-dracula-grn: #50fa7b;
+  --color-dracula-org: #ffb86c;
+  --color-dracula-pnk: #ff79c6;
+  --color-dracula-pur: #bd93f9;
+  --color-dracula-red: #ff5555;
+  --color-dracula-ylw: #f1fa8c;
+
+  /* Cores Originais das Tecnologias */
+  --color-brand-react: #61dafb;
+  --color-brand-next: #f4f4f4;
+  --color-brand-ts: #3178c6;
+  --color-brand-tailwind: #06b6d4;
+  --color-brand-laravel: #ff2d20;
+  --color-brand-node: #339933;
+  --color-brand-prisma: #36ADA0;
+  --color-brand-graphql: #e10098;
+  --color-brand-github: #bd93f9;
+}
+
+:root {
+  font-family: var(--font-fira);
+}
+
+/* Scrollbar Personalizada para Modo Dark */
+@layer base {
+  .dark ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    @apply bg-dracula-bg;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-dracula-cur/50 rounded-full border-2 border-transparent bg-clip-padding transition-colors;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-dracula-cmt;
+  }
+
+  /* Scrollbar para Firefox */
+  .dark {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-dracula-cur) var(--color-dracula-bg);
+  }
+}
+
+/* Utilitários de Sintaxe Dracula */
+.token-tag { @apply text-dracula-pnk; }
+.token-attr { @apply text-dracula-grn; }
+.token-string { @apply text-dracula-ylw; }
+.token-comment { @apply text-dracula-cmt; }
+.token-keyword { @apply text-dracula-pur; }
+
+/* Configuração de fundo minimalista */
+body {
+  @apply bg-white dark:bg-dracula-bg text-gray-800 dark:text-dracula-fg transition-colors duration-300;
+}
+
+/* Utilitários para esconder a scrollbar quando necessário (mantenha sua classe no-scrollbar funcional) */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Utilitários Neon Reais */
+@utility neon-pnk { text-shadow: 0 0 2px #ff79c6, 0 0 10px #ff79c6; }
+@utility neon-pur { text-shadow: 0 0 2px #bd93f9, 0 0 10px #bd93f9; }
+@utility neon-grn { text-shadow: 0 0 2px #50fa7b, 0 0 10px #50fa7b; }
+@utility neon-cyn { text-shadow: 0 0 2px #8be9fd, 0 0 10px #8be9fd; }
+@utility neon-ylw { text-shadow: 0 0 2px #f1fa8c, 0 0 10px #f1fa8c; }
+@utility neon-fg { text-shadow: 0 0 2px #f8f8f2, 0 0 10px #f8f8f2; }
+
+/* Custom Tooltip System - Elite IDE Standard */
+@utility custom-tooltip {
+  @apply absolute left-full top-1/2 -translate-y-1/2 ml-3 px-3 py-1.5
+         bg-gray-950 dark:bg-dracula-bg border border-gray-700 dark:border-dracula-pnk
+         text-white dark:text-dracula-fg
+         text-[11px] font-bold rounded shadow-2xl
+         whitespace-nowrap z-100 pointer-events-none
+         opacity-0 invisible group-hover:opacity-100 group-hover:visible
+         transition-all duration-150 ease-out;
+}
+
+/* Seta de Alta Precisão via Background SVG */
+.custom-tooltip::before {
+  content: "";
+  @apply absolute right-full top-1/2 -translate-y-1/2 w-2.25 h-4;
+  /* O SVG abaixo desenha um triângulo com borda que se conecta perfeitamente ao container */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='16' viewBox='0 0 9 16'%3E%3Cpath d='M9 0L0 8L9 16' fill='none' stroke='%234b5563' stroke-width='1'/%3E%3Cpath d='M9 1L1.5 8L9 15' fill='%231a1c29'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Variante Dark para a Seta (Dracula Pink) */
+.dark .custom-tooltip::before {
+  /* Stroke: Dracula Pink (#ff79c6) | Fill: Dracula BG (#1a1c29) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='16' viewBox='0 0 9 16'%3E%3Cpath d='M9 0L0 8L9 16' fill='none' stroke='%23ff79c6' stroke-width='1'/%3E%3Cpath d='M9 1L1.5 8L9 15' fill='%231a1c29'/%3E%3C/svg%3E");
+}
