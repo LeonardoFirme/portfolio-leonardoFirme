@@ -1,8 +1,8 @@
 /*
-* file: src/pages/Profile.vue
-* description: Página de perfil profissional 100% responsiva com stack dinâmica.
+* file: src/pages/AboutMe.vue
+* description: Página de perfil profissional 100% responsiva com stack dinâmica e tipagem estrita.
 * author: Leonardo Firme
-* version: 1.0.0
+* version: 1.1.0
 */
 
 <script setup lang="ts">
@@ -11,35 +11,42 @@ import { Motion } from "@motionone/vue";
 import { typewriterData } from '../data/typewriter';
 import { openWhatsApp } from "../data/whatsapp";
 
-const handleContactClick = (): void => {
-  openWhatsApp("5551997421833");
-};
-
+/**
+ * Interface rigorosa para as habilidades
+ */
 interface Skill {
   category: string;
   items: string[];
 }
 
+const handleContactClick = (): void => {
+  openWhatsApp("5551997421833");
+};
+
+// Estados reativos com tipagem explícita
 const displayText = ref<string>("");
 const currentTitleIndex = ref<number>(0);
 const isDeleting = ref<boolean>(false);
 
+/**
+ * Lógica de Typewriter com tratamento de segurança para o compilador TS
+ */
 const handleType = (): void => {
   const { titles, typingSpeed, deletingSpeed, pauseDuration } = typewriterData;
 
-  // CORREÇÃO: Garantia de que titles[index] não é undefined para o TS
-  const currentFullText = titles[currentTitleIndex.value] ?? "";
-  let nextSpeed = isDeleting.value ? deletingSpeed : typingSpeed;
+  // SOLUÇÃO TS18048: Garantia de string via Nullish Coalescing
+  const currentFullText: string = titles[currentTitleIndex.value] ?? "";
+  let nextSpeed: number = isDeleting.value ? deletingSpeed : typingSpeed;
 
   if (isDeleting.value) {
-    // Reduz o texto
+    // Redução do texto com segurança de tipo
     displayText.value = currentFullText.substring(0, displayText.value.length - 1);
   } else {
-    // Aumenta o texto
+    // Incremento do texto com segurança de tipo
     displayText.value = currentFullText.substring(0, displayText.value.length + 1);
   }
 
-  // Lógica de transição de estados
+  // Controle de fluxo de animação
   if (!isDeleting.value && displayText.value === currentFullText) {
     isDeleting.value = true;
     nextSpeed = pauseDuration;
