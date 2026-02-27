@@ -26,15 +26,20 @@ const isDeleting = ref<boolean>(false);
 
 const handleType = (): void => {
   const { titles, typingSpeed, deletingSpeed, pauseDuration } = typewriterData;
-  const currentFullText = titles[currentTitleIndex.value];
+
+  // CORREÇÃO: Garantia de que titles[index] não é undefined para o TS
+  const currentFullText = titles[currentTitleIndex.value] ?? "";
   let nextSpeed = isDeleting.value ? deletingSpeed : typingSpeed;
 
   if (isDeleting.value) {
+    // Reduz o texto
     displayText.value = currentFullText.substring(0, displayText.value.length - 1);
   } else {
+    // Aumenta o texto
     displayText.value = currentFullText.substring(0, displayText.value.length + 1);
   }
 
+  // Lógica de transição de estados
   if (!isDeleting.value && displayText.value === currentFullText) {
     isDeleting.value = true;
     nextSpeed = pauseDuration;
@@ -43,10 +48,13 @@ const handleType = (): void => {
     currentTitleIndex.value = (currentTitleIndex.value + 1) % titles.length;
     nextSpeed = 500;
   }
+
   setTimeout(handleType, nextSpeed);
 };
 
-onMounted(() => handleType());
+onMounted(() => {
+  handleType();
+});
 
 const professionalProfile = {
   bio: "Desenvolvedor focado na criação de ecossistemas empresariais de alta performance. Especialista em arquitetura Laravel integrada a interfaces reativas com React e Vue, priorizando tipagem estrita e escalabilidade.",
